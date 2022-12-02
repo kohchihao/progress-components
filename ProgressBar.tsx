@@ -38,13 +38,13 @@ const ProgressBar = ({ progress = 0 }: Props) => {
             transform: [
               {
                 translateX: loaderValue.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [-1 * 0.5 * deviceWidth, 0],
+                  inputRange: [0, 100],
+                  outputRange: [-1 * 0.5 * deviceWidth, 0], // negative => left to right and vice-versa
                 }),
               },
               {
                 scaleX: loaderValue.interpolate({
-                  inputRange: [0, 1],
+                  inputRange: [0, 100],
                   outputRange: [0.0001, 1],
                 }),
               },

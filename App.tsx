@@ -2,35 +2,29 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Animated } from 'react-native';
 import React, { useState, useRef, useEffect } from 'react';
 import ProgressBar from './ProgressBar';
-
+import ProgressCircle from './ProgressCircle';
 export default function App() {
   const countInterval = useRef<any>(null);
   const [count, setCount] = useState(0);
-
-  const loaderValue = useRef(new Animated.Value(0)).current;
-
-  const load = (count) => {
-    Animated.timing(loaderValue, {
-      toValue: count, //final value
-      duration: 100, //update value in 500 milliseconds
-      useNativeDriver: true,
-    }).start();
-  };
+  const [circleCount, setCircleCount] = useState(0);
 
   useEffect(() => {
-    countInterval.current = setInterval(
-      () => setCount((old) => old + 0.1),
-      500
-    );
+    countInterval.current = setInterval(() => {
+      setCount((old) => old + 1);
+      setCircleCount((old) => old + 1);
+    }, 200);
     return () => {
       clearInterval(countInterval.current); //when user exits, clear this interval.
     };
   }, []);
 
   useEffect(() => {
-    load(count);
-    if (count >= 1) {
+    // load(count);
+    if (count >= 100) {
       setCount(0);
+    }
+    if (circleCount >= 100) {
+      setCircleCount(0);
     }
   }, [count]);
 
@@ -40,12 +34,17 @@ export default function App() {
       <Text>{count}</Text>
 
       <View style={{ width: '50%' }}>
-        <ProgressBar progress={0.6} />
+        <ProgressBar progress={60} />
       </View>
 
       <ProgressBar progress={0} />
-      <ProgressBar progress={100} />
+      <ProgressBar progress={50} />
       <ProgressBar progress={count} />
+
+      <ProgressCircle progress={0} />
+      <ProgressCircle progress={25} />
+      <ProgressCircle progress={50} />
+      <ProgressCircle progress={circleCount} />
     </View>
   );
 }
